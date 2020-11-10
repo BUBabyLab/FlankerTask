@@ -22,9 +22,9 @@ dataFile.write('targetSide,oriIncrement,correct\n')
 
 # create the staircase handler
 #  stepSizes=[8,4,4,2],
-staircase = data.StairHandler(startVal = 20.0,
+staircase = data.StairHandler(startVal = 1,
                             #  Array as list alters the size of steps - do we want this?
-                          stepType = 'lin', stepSizes=[8,4,4,2],
+                          stepType = 'lin', stepSizes= 0.05,
                           minVal = 0, maxVal = 1,
                           nUp=1, nDown=3,  # will home in on the 80% threshold
                           nTrials=10)
@@ -49,6 +49,7 @@ mySize = 128
 theSF = 0.03125
 vOffset = 96
 hOffset = 100
+currContr = 1
 
 maskerTL = visual.GratingStim(win, tex='sin', sf=theSF, size=mySize, mask='gauss')
 maskerTR = visual.GratingStim(win, tex='sin', sf=theSF, size=mySize, mask='gauss')
@@ -85,7 +86,7 @@ for thisIncrement in staircase:  # will continue the staircase until it terminat
     #  setContrast changes contrast!
     #  thisIncrement will be set to +1 or -1, depending on last trial
     #  Negative values decrease by 0.05, positive increase
-    target.setContrast(thisIncrement * 0.05)
+    target.setContrast(currContr)
 
     # draw all stimuli
     maskerTL.draw()
@@ -97,7 +98,7 @@ for thisIncrement in staircase:  # will continue the staircase until it terminat
     win.flip()
 
     # wait 750ms; but use a loop of x frames for more accurate timing
-    core.wait(0.75)
+    core.wait(2)
 
     # blank screen
     fixation.draw()
@@ -117,10 +118,13 @@ for thisIncrement in staircase:  # will continue the staircase until it terminat
             elif thisKey in ['q', 'escape']:
                 core.quit()  # abort experiment
         event.clearEvents()  # clear other (eg mouse) events - they clog the buffer
-
+    
+    
+    currContr = currContr - (thisIncrement * .05)
+    
     # add the data to the staircase so it can calculate the next level
     staircase.addData(thisResp)
-    dataFile.write('%i,%.3f,%i\n' %(targetSide, thisIncrement, thisResp))
+    dataFile.write('%i,%.3f,%i\n' %(targetSide, currContr, thisResp))
     core.wait(1)
 
 # give some output to user in the command line in the output window
@@ -170,7 +174,7 @@ for thisIncrement in staircase2:  # will continue the staircase until it termina
     win.flip()
 
     # wait 750ms; but use a loop of x frames for more accurate timing
-    core.wait(0.50)
+    core.wait(.75)
 
     # blank screen
     fixation.draw()

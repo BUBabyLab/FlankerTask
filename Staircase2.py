@@ -59,7 +59,8 @@ win.flip()#to show our newly drawn 'stimuli'
 event.waitKeys()
 
 for trialLoop in range(5):
-    messagetrial = visual.TextStim(win, pos=[0,+vOffset],text='Trial %i of 5.', trialLoop+1)
+    formatString = 'Trial %i of 5.' %trialLoop
+    messagetrial = visual.TextStim(win, pos=[0,+vOffset],text= formatString)
     messagetrial.draw()
     win.flip()
     event.waitKeys()
@@ -149,7 +150,8 @@ event.waitKeys()  # wait for participant to respond
 vOffset = 48
 
 for trialLoop in range(5):
-    messagetrial = visual.TextStim(win, pos=[0,+vOffset],text='Trial %i of 5.', trialLoop+1)
+    formatString = 'Trial %i of 5.' %trialLoop+1
+    messagetrial = visual.TextStim(win, pos=[0,+vOffset],text= formatString)
     messagetrial.draw()
     win.flip()
     event.waitKeys()
